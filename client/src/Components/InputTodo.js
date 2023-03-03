@@ -6,12 +6,11 @@ const InputTodo = () => {
     e.preventDefault();
     try {
       const body = { description: todo };
-      const res = await fetch("http://localhost:5000/todos", {
+      await fetch("http://localhost:5000/todos", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
-      console.log(res);
       window.location = "/";
     } catch (e) {
       console.error(e.message);

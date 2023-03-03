@@ -39,7 +39,7 @@ app.get("/todos", async (req, res) => {
 app.get("/todos/:id", async (req, res) => {
   try {
     const id = req.params.id;
-    if (!Number.isInteger(id)) {
+    if (!Number.isInteger(+id)) {
       res.status(422).send({ message: "Todos id should be an integer!" });
     }
     const todo = await pool.query("SELECT * FROM todo WHERE todo_id = $1", [
@@ -78,11 +78,12 @@ app.put("/todos/:id", async (req, res) => {
 app.delete("/todos/:id", async (req, res) => {
   try {
     const id = req.params.id;
-    if (!Number.isInteger(id)) {
+    if (!Number.isInteger(+id)) {
       res.status(422).send({ message: "Todos id should be an integer!" });
     }
     await pool.query("DELETE FROM todo WHERE todo_id = $1", [id]);
-    res.status(200);
+    const resp = { message: "Todo deleted" };
+    res.status(200).json(resp);
   } catch (e) {
     res.status(500).send({ message: e.message });
   }
